@@ -1,0 +1,19 @@
+<ion-content>
+    <ion-card> 
+    <ion-card-header> 
+    Login
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-input type="text" [(ngModel)]="nani.email" placeholder="nani Email" ></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-input type="password" [(ngModel)]="nani.password" placeholder="Password" ></ion-input>
+          </ion-item>
+          <button ion-button (click)="login(nani)">Login</button>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>    
+</ion-content>
