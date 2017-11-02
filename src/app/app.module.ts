@@ -14,14 +14,15 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from "angularfire2/auth"
-
+import { GoogleMaps } from '@ionic-native/google-maps';
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     ListPage,
     LoginPage,
-    PricePage
+    PricePage,
+    
   ],
   imports: [
     BrowserModule,
@@ -48,6 +49,7 @@ import { AngularFireAuthModule } from "angularfire2/auth"
   providers: [
     StatusBar,
     SplashScreen,
+    GoogleMaps,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
