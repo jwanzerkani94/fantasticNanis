@@ -5,7 +5,6 @@ import { LoginPage } from '../login/login'
 import { AngularFireDatabase } from "angularfire2/database";
 import firebase from 'firebase';
 import { ActionSheetController } from 'ionic-angular';
-import { PricePage } from '../price/price';
 import {GoogleMaps} from '@ionic-native/google-maps'
 
 declare var google: any;
@@ -95,9 +94,6 @@ export class HomePage {
 
   // }
 
-  timer(){
-    this.navCtrl.push(PricePage);
-  }
 }
 
 
