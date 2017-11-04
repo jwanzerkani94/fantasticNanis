@@ -5,7 +5,6 @@ import { LoginPage } from '../login/login'
 import { AngularFireDatabase } from "angularfire2/database";
 import firebase from 'firebase';
 import { ActionSheetController } from 'ionic-angular';
-import { PricePage } from '../price/price';
 import{Geolocation} from '@ionic-native/geolocation';
 import {
 	GoogleMaps,
