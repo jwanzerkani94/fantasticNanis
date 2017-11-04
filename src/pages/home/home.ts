@@ -15,7 +15,6 @@ import {
 	GoogleMapsEvent
 } from '@ionic-native/google-maps';
 
-
 declare var google: any;
 
 @Component({
@@ -123,6 +122,7 @@ return this._geoLoc.getCurrentPosition();
     }
    
    }
+  
   
 
    isRequested(){
