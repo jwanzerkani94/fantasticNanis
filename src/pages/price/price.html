@@ -19,31 +19,26 @@
         <ion-list-header>
           nani's name
         </ion-list-header>
-        <ion-item>Maram</ion-item>
+        <ion-item id ="naniName"></ion-item>
     </ion-list>
     <ion-list>
         <ion-list-header>
           user name
         </ion-list-header>
-        <ion-item>Israa</ion-item>
+        <ion-item id ="userName"></ion-item>
     </ion-list>
     <ion-list>
-        <ion-list-header>
+        <ion-list-header >
           starting time
         </ion-list-header>
-        <ion-item>00:00:00</ion-item>
+        <ion-item id="time"></ion-item>
     </ion-list>
     <ion-list>
         <ion-list-header>
           timer
         </ion-list-header>
-        <ion-item>00:00:00</ion-item>
+        <ion-item id="timer"></ion-item>
     </ion-list>
-    <ion-list>
-        <ion-list-header>
-          price
-        </ion-list-header>
-        <ion-item>0.0</ion-item>
-    </ion-list>
+    <button ion-button block (click)="calculatePrice()">End Session</button>
 
 </ion-content>

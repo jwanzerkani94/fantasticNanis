@@ -6,7 +6,8 @@ import { AngularFireDatabase } from "angularfire2/database";
 import firebase from 'firebase';
 import { ActionSheetController } from 'ionic-angular';
 import { PricePage } from '../price/price';
-import {GoogleMaps} from '@ionic-native/google-maps'
+import { GoogleMaps } from '@ionic-native/google-maps';
+
 
 declare var google: any;
 @Component({
@@ -94,6 +95,11 @@ export class HomePage {
   //   }
 
   // }
+  information ={
+    nani_id : "YdSV2gxkYoO84TtnOoOjBauEJB33" ,
+    user_id : "7dfXMMQQsfN7MqpHHdYF3EBwSFX2" ,
+    start_time: "7:43:16 PM"
+  }
 
   timer(){
     this.navCtrl.push(PricePage);
