@@ -13,6 +13,7 @@ import {
 	LatLng,
 	GoogleMapsEvent
 } from '@ionic-native/google-maps';
+import { PricePage } from '../price/price';
 
 declare var google: any;
 
@@ -217,6 +218,9 @@ return this._geoLoc.getCurrentPosition();
       stepDisplay.setContent(text);
       stepDisplay.open(map, marker);
     });
+  }
+  timer(){
+    this.navCtrl.push(PricePage);
   }
 }
 
