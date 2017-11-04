@@ -13,6 +13,8 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from "angularfire2/auth"
 import { GoogleMaps } from '@ionic-native/google-maps';
+import {Geolocation} from '@ionic-native/geolocation';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -44,6 +46,7 @@ import { GoogleMaps } from '@ionic-native/google-maps';
     StatusBar,
     SplashScreen,
     GoogleMaps,
+    Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
