@@ -219,6 +219,10 @@ return this._geoLoc.getCurrentPosition();
       stepDisplay.open(map, marker);
     });
   }
+
+  timer(){
+    this.navCtrl.push(PricePage);
+  }
 }
 
 
