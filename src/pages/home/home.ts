@@ -5,7 +5,6 @@ import { LoginPage } from '../login/login'
 import { AngularFireDatabase } from "angularfire2/database";
 import firebase from 'firebase';
 import { ActionSheetController } from 'ionic-angular';
-import { PricePage } from '../price/price';
 import{Geolocation} from '@ionic-native/geolocation';
 import {
 	GoogleMaps,
@@ -14,7 +13,7 @@ import {
 	LatLng,
 	GoogleMapsEvent
 } from '@ionic-native/google-maps';
-
+import { PricePage } from '../price/price';
 
 declare var google: any;
 
@@ -224,12 +223,3 @@ return this._geoLoc.getCurrentPosition();
     this.navCtrl.push(PricePage);
   }
 }
-
-
-
-
-
-   
-
-
-
