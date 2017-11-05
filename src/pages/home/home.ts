@@ -123,7 +123,6 @@ return this._geoLoc.getCurrentPosition();
    
    }
   
-  
 
    isRequested(){
      //if nani is requested
@@ -219,16 +218,8 @@ return this._geoLoc.getCurrentPosition();
       stepDisplay.open(map, marker);
     });
   }
+
   timer(){
     this.navCtrl.push(PricePage);
   }
 }
-
-
-
-
-
-   
-
-
-
