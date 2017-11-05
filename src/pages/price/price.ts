@@ -4,6 +4,7 @@ import firebase from "firebase";
 import { AngularFireDatabase } from "angularfire2/database";
 import { AlertController } from 'ionic-angular';
 import { HomePage } from '../home/home';
+import { AngularFireAuth } from "angularfire2/auth";
 
 /**
  * Generated class for the PricePage page.
@@ -22,7 +23,8 @@ export class PricePage {
   nanis;
   users;
   money;
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+  constructor(private afAuth: AngularFireAuth,
+              public navCtrl: NavController, public navParams: NavParams,
               public db: AngularFireDatabase,
               public alertCtrl: AlertController) {
     db.object("services").valueChanges().subscribe(data => {
@@ -35,8 +37,20 @@ export class PricePage {
     db.object("users").valueChanges().subscribe(data => {
       this.users = data;
     });
-  }
+    let that = this
+    database.ref('/active').on('value', function(snapshot) {
+     let objectOfServices = snapshot.val();
+     var Nnani = afAuth.auth.currentUser;
+     for(var keyy in objectOfServices){
+       if(Nnani.uid===objectOfServices[keyy].nani_id){
+        that.sessionId = keyy
+         console.log("ppppppppppprice",objectOfServices[keyy].user_position, keyy)
+       }
+     }
 
+   });
+  }
+  sessionId;
   // ionViewOnLoad(){
   //   this.showInfo();
   // }
@@ -46,7 +60,7 @@ export class PricePage {
     let nani_id;
     for(var key in this.service){
       //this needs to be solved when we connect the apps
-      if(key === '6288119'){
+      if(key === this.sessionId){
         service_id = key;
         nani_id = this.service[key].nani_id;
         user_id = this.service[key].user_id;
@@ -68,14 +82,16 @@ export class PricePage {
     let db = firebase.database();
     var currentTime = new Date(new Date().getTime()).toLocaleTimeString();
     //also this line 
-    db.ref("services/6288119").update({ end_time : currentTime });
-    this.timeToMoney(this.service[6288119].start_time,currentTime);
+    db.ref("services/"+this.sessionId).update({ end_time : currentTime });
+    this.timeToMoney(this.service[this.sessionId].start_time,currentTime);
+    db.ref("active/"+this.sessionId).remove();
   }
 
   timeToMoney(start , end) {
     let x = this;
     var startTime = start.split(":")
     var endTime = end.split(":")
+    console.log("time to money",startTime , endTime )
     this.money = (Number(endTime[0])*60 + Number(endTime[1]) - Number(startTime[0])*60 - Number(startTime[1])) * (20/60);
     // alert("total price : " + money) 
     let alert = this.alertCtrl.create({
