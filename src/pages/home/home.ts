@@ -40,6 +40,24 @@ export class HomePage {
       db.object('nani').valueChanges().subscribe(data => {
         this.nani= data;
    });
+      ////////////////hiba//////////////////////////
+      let that = this
+      database.ref('/active').on('value', function(snapshot) {
+       let objectOfServices = snapshot.val();
+       var Nnani = afAuth.auth.currentUser;
+       console.log(Nnani.uid, objectOfServices)
+       for(var keyy in objectOfServices){
+         console.log(objectOfServices[keyy].nani_id);
+         var c = 0;
+         if(Nnani.uid===objectOfServices[keyy].nani_id){
+           c++
+           console.log("nani in requested",objectOfServices[keyy].user_position, keyy)
+           that.userPosition = objectOfServices[keyy].user_position
+         }
+       }
+         console.log(that.userPosition)
+     });
+   //////////////////////////////hiba/////////////////
   }
   
   userPosition;
