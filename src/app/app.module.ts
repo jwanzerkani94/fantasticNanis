@@ -21,7 +21,7 @@ import {Geolocation} from '@ionic-native/geolocation';
     MyApp,
     HomePage,
     LoginPage,
-    PricePage,
+    PricePage
     
   ],
   imports: [
