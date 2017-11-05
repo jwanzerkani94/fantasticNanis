@@ -25,6 +25,40 @@ export class MyApp {
       { title: 'Home', component: HomePage }
     ];
 
+    let config = {
+      apiKey: "AIzaSyAUipRdjwgFm76lPfFCVWH84OWKSY5S32I",
+      authDomain: "fantastic-13633.firebaseapp.com",
+      databaseURL: "https://fantastic-13633.firebaseio.com",
+      projectId: "fantastic-13633",
+      storageBucket: "fantastic-13633.appspot.com",
+      messagingSenderId: "1014964753035"
+    }
+    
+    firebase.initializeApp(config)  
+    firebase.auth().onAuthStateChanged((user) => {
+      console.log("is user vertified? ",user.emailVerified)
+      if (user.emailVerified) {
+        console.log("this should appear if the user is vertified")
+        // If there's no user logged in send him to the LoginPage
+        this.rootPage = HomePage;
+      } else {
+ 
+        console.log("this should appear if the user not vertified")
+        // If there's a user take him to the home page.
+        this.rootPage = LoginPage;
+      }
+    });
+    const messaging = firebase.messaging();
+    messaging.requestPermission()
+    .then(function() {
+      console.log('Notification permission granted.');
+      // TODO(developer): Retrieve an Instance ID token for use with FCM.
+      // ...
+    })
+    .catch(function(err) {
+      console.log('Unable to get permission to notify.', err);
+    });
+
   }
 
   initializeApp() {
