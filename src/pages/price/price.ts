@@ -40,7 +40,6 @@ export class PricePage {
   // ionViewOnLoad(){
   //   this.showInfo();
   // }
-
   showInfo(){
     let service_id;
     let user_id;
