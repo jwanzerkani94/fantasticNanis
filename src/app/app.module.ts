@@ -12,8 +12,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireAuthModule } from "angularfire2/auth"
-import { GoogleMaps } from '@ionic-native/google-maps';
+import { AngularFireAuthModule } from "angularfire2/auth";
 import {Geolocation} from '@ionic-native/geolocation';
 
 @NgModule({
@@ -48,7 +47,6 @@ import {Geolocation} from '@ionic-native/geolocation';
   providers: [
     StatusBar,
     SplashScreen,
-    GoogleMaps,
     Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
