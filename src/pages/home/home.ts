@@ -6,13 +6,6 @@ import { AngularFireDatabase } from "angularfire2/database";
 import firebase from 'firebase';
 import { ActionSheetController } from 'ionic-angular';
 import{Geolocation} from '@ionic-native/geolocation';
-import {
-	GoogleMaps,
-  GoogleMap,
-  CameraPosition,
-	LatLng,
-	GoogleMapsEvent
-} from '@ionic-native/google-maps';
 import { PricePage } from '../price/price';
 
 declare var google: any;
@@ -25,14 +18,16 @@ declare var google: any;
 
 export class HomePage {
   @ViewChild('map') mapElement: ElementRef;
-  map: GoogleMap;
+  map: any;
   nani;
   coordinates={};
+  intervalFunc;
+  users;
+  userId1;
   public toggleStatus: boolean;
   constructor(private afAuth : AngularFireAuth,
     public navCtrl: NavController,
     public db: AngularFireDatabase,
-    private _googleMaps: GoogleMaps,
     public actionSheetCtrl: ActionSheetController,
     private _geoLoc: Geolocation) {
       this.toggleStatus=false;
@@ -40,89 +35,87 @@ export class HomePage {
       db.object('nani').valueChanges().subscribe(data => {
         this.nani= data;
    });
-      ////////////////hiba//////////////////////////
+   db.object('users').valueChanges().subscribe(data => {
+    this.users= data;
+    console.log(this.users)
+  });
       let that = this
       database.ref('/active').on('value', function(snapshot) {
        let objectOfServices = snapshot.val();
        var Nnani = afAuth.auth.currentUser;
        console.log(Nnani.uid, objectOfServices)
        for(var keyy in objectOfServices){
-         console.log(objectOfServices[keyy].nani_id);
+         console.log("nainId",objectOfServices[keyy].nani_id);
          var c = 0;
          if(Nnani.uid===objectOfServices[keyy].nani_id){
            c++
            console.log("nani in requested",objectOfServices[keyy].user_position, keyy)
+           console.log("testtttttttt",objectOfServices[keyy].user_id)
            that.userPosition = objectOfServices[keyy].user_position
+           that.showDirectionAndDuration();
+           console.log("ussssssssser position",that.userPosition)
+           alert("You Have Been Requested");
+           that.userId1 = objectOfServices[keyy].user_id;
+          console.log(that.users);           
          }
        }
-         console.log(that.userPosition)
+
      });
-   //////////////////////////////hiba/////////////////
   }
   
   userPosition;
+  naniPosition;
 
   logout(){
   this.afAuth.auth.signOut()  
   this.navCtrl.setRoot(LoginPage) 
   }
 
-  moveCamera(loc: LatLng){
-    let options: CameraPosition<LatLng> = {
-      target: loc,
-      zoom: 15,
-      tilt: 10
+  openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+}
 
-    }
-    this.map.moveCamera(options)
-  }
-
-
-  ngAfterViewInit(){
-  let loc: LatLng;
-  this.initMap();
-
-  this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
-    this.getLocation().then(res => {
-      loc= new LatLng(res.coords.latitude, res.coords.longitude);
-      this.moveCamera(loc);
-    }).catch(err => {
-      console.log(err);
-    });
-  });
-  }
-  
-
-  
+closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+}
 
   ionViewWillLoad(){
+    this.initMap();
 
   }
 
-
   initMap(){
-    let element = this.mapElement.nativeElement;
-    this.map = this._googleMaps.create(element);
+    let x = this;
+    this._geoLoc.getCurrentPosition().then(position => {
+      x.naniPosition = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      let location = new google.maps.LatLng(
+        position.coords.latitude,
+        position.coords.longitude
+      );
+      this.map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 15,
+        center: location,
+        mapTypeId: "terrain"
+      });
+    });
   }  
-
-getLocation(){
-return this._geoLoc.getCurrentPosition();
-}
 
   trackNani(){
     console.log("initial toggle state", this.toggleStatus )
-    // var db = firebase.database();    
-    // db.ref("nani/YdSV2gxkYoO84TtnOoOjBauEJB33").update({ ava});
     if(this.toggleStatus === true){        
           let naniesFix=this.nani;
           var Nnani = this.afAuth.auth.currentUser;
           var db = firebase.database();    
           db.ref("nani/"+Nnani.uid).update({ available : true});
       let that = this
-        var intervalFunc = setInterval(function timer() {
+        this.intervalFunc = setInterval(function timer() {
             that._geoLoc.getCurrentPosition().then((position) =>{
               var naniLat = position.coords.latitude;
               var nanilng = position.coords.longitude;
+              console.log(naniLat, nanilng);
               var db = firebase.database();    
               db.ref("nani/"+Nnani.uid).update({ lat: naniLat, lng:nanilng});
           }, function(error) {
@@ -133,7 +126,7 @@ return this._geoLoc.getCurrentPosition();
    
     }else{
       console.log("inside false")
-      clearInterval(intervalFunc)
+      clearInterval(this.intervalFunc)
       var Nnani = this.afAuth.auth.currentUser;    
       var db = firebase.database();    
       db.ref("nani/"+Nnani.uid).update({ available : false});
@@ -142,10 +135,6 @@ return this._geoLoc.getCurrentPosition();
    }
   
 
-   isRequested(){
-     //if nani is requested
-     
-   }
    showDirectionAndDuration(){
     //direction code
     let x = this;
@@ -157,16 +146,7 @@ return this._geoLoc.getCurrentPosition();
     var onChangeHandler = function() {
       x.calculateAndDisplayRoute(directionsDisplay, directionsService, markerArray, stepDisplay, this.map);
     };
-    document.getElementById('start').addEventListener('change', onChangeHandler);
-    // document.getElementById('end').addEventListener('change', onChangeHandler);
-    //duration code
-    
-    // var bounds = new google.maps.LatLngBounds;
-    // var destination = 'Yaser Mall';
-    // var origin = 'Mecca Mall';
-    // var origin = {lat: 31.977285, lng: 35.843623};
-    // var destination = {lat: 31.955330, lng: 35.834616};
-    var origin = this.coordinates;
+    var origin = this.naniPosition;
     var destination = x.userPosition;
     // var geocoder = new google.maps.Geocoder;
     var service = new google.maps.DistanceMatrixService;
@@ -187,12 +167,11 @@ return this._geoLoc.getCurrentPosition();
             outputDiv.innerHTML = '';
             for (var i = 0; i < originList.length; i++) {
               var results = response.rows[i].elements;
-              console.log(results)
-              for (var j = 0; j < results.length; j++) {
-              outputDiv.innerHTML += originList[i] + ' to ' + destinationList[j] +
-                ': ' + results[j].distance.text + ' in ' +
-                results[j].duration.text + '<br>';
-              }
+              for (var key3 in x.users[x.userId1]) {
+                if(key3 === "firstName" || key3 === "phoneNumber"){
+                  outputDiv.innerHTML += x.users[x.userId1][key3] + '<br>'                  
+                }
+             }
             }
           }
       });
@@ -203,7 +182,7 @@ return this._geoLoc.getCurrentPosition();
       markerArray[i].setMap(null);
     }
     directionsService.route({
-      origin: this.coordinates,
+      origin: this.naniPosition,
       destination: x.userPosition,
       travelMode: 'DRIVING'
     }, function(response, status) {
@@ -238,6 +217,8 @@ return this._geoLoc.getCurrentPosition();
   }
 
   timer(){
+    this.toggleStatus=false;
+    this.trackNani();
     this.navCtrl.push(PricePage);
   }
 }

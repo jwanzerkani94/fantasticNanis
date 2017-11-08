@@ -136,7 +136,7 @@ export class PricePage {
     console.log('ionViewDidLoad PricePage');
     var timeOut = setTimeout(function(){
       x.showInfo()
-    },200);
+    },1000);
     this.startTimer();
   }
 }
