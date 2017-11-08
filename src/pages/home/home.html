@@ -1,8 +1,11 @@
-<ion-content padding>
-  
+<ion-header style="background-color:#ffb84d ">
+    <a><button class='pos' style="background-color:#ffb84d ;float: right" (click)="logout()" ion-button>log out</button></a>    
 <ion-toggle [(ngModel)]="toggleStatus" pulsado checked="false" (ionChange)="trackNani()">  </ion-toggle>
-  <button (click)="logout()" ion-button>log out</button>
-
-  <button ion-button (click)="timer()">start session</button>
+</ion-header>
+<ion-content padding>
+  <button ion-button class="butt" (click)="timer()" style="background-color:#ffb84d "> Start Session </button>
+  <div id="warnings-panel"></div>
 <div #map id="map" style="height:100%"></div>
+<button id="output"></button>
 </ion-content>
+
